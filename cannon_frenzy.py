@@ -12,6 +12,7 @@ class CannonFrenzy:
     def __init__(self):
         # Initialize pygame modules
         pygame.init()
+        pygame.mixer.init()
 
         # Stop the game if pygame fails to initialize
         if not pygame.get_init():
@@ -56,11 +57,11 @@ class CannonFrenzy:
         self.target_hit_sound = pygame.mixer.Sound("assets/audio/sfx/target_hit.ogg")
         self.target_hit_sound.set_volume(0.7)
 
-        #Level Transition sound
+        # Level Transition sound
         self.level_entry_sound = pygame.mixer.Sound("assets/audio/mixkit-game-level-completed-2059.wav")
         self.level_entry_sound.set_volume(0.5)
 
-        #Gameplay Background Music
+        # Gameplay Background Music
         self.background_music = "assets/audio/mixkit-deep-urban-623.mp3"
         pygame.mixer.music.set_volume(0.3)
 
@@ -114,6 +115,14 @@ class CannonFrenzy:
         self.game_over = False
         self.cannonballs = []
         self.cannon = sprites.Cannon(self.screen, self.cannonballs, self.current_level.cannonballs_left)
+
+    def adjust_volume(self, level):
+        """Adjust the volume of the background music."""
+        if 0.0 <= level <= 1.0:
+            pygame.mixer.music.set_volume(level)
+            print(f"Volume set to {level * 100:.0f}%")
+        else:
+            print("Error: Volume level must be between 0.0 and 1.0")
 
     def run(self):
         """Runs the game loop."""
